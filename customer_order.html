@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Custom Jewellery | Secure Jewellery Management</title>
+    <style>
+        /* General Reset & Theme Variables */
+        :root {
+            --bg-color: #1a1a1a;
+            --container-bg: #2c2c2c;
+            --input-bg: #333;
+            --text-main: #fff;
+            --text-muted: #ccc;
+            --accent-gold: #d4af37;
+            --border-color: #444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Navigation Bar (Simulated for Customer Role) */
+        .navbar {
+            width: 100%;
+            background-color: var(--container-bg);
+            padding: 15px 40px;
+            border-bottom: 2px solid var(--accent-gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h3 { color: var(--accent-gold); font-weight: 300; letter-spacing: 1px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; margin-left: 20px; font-size: 0.9rem; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent-gold); }
+
+        /* Main Container */
+        .main-content {
+            width: 100%;
+            max-width: 800px;
+            margin: 40px 20px;
+        }
+
+        .form-container {
+            background-color: var(--container-bg);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .page-header h2 { font-weight: 300; }
+        .page-header p { color: var(--text-muted); font-size: 0.9rem; margin-top: 5px; }
+
+        /* Form Styling */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group { margin-bottom: 20px; }
+        .full-width { grid-column: span 2; }
+
+        label { display: block; margin-bottom: 8px; color: var(--accent-gold); font-size: 0.9rem; }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+
+        textarea { resize: vertical; min-height: 120px; }
+
+        /* Task 2: File Upload Styling */
+        .file-upload-wrapper {
+            position: relative;
+            border: 2px dashed var(--border-color);
+            border-radius: 4px;
+            padding: 30px;
+            text-align: center;
+            background-color: var(--input-bg);
+            transition: border-color 0.3s;
+        }
+
+        .file-upload-wrapper:hover { border-color: var(--accent-gold); }
+        
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            left: 0; top: 0; width: 100%; height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-icon { font-size: 2rem; color: var(--accent-gold); margin-bottom: 10px; display: block; }
+        .upload-text { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Submit Button */
+        .btn-submit {
+            background-color: var(--accent-gold);
+            color: #1a1a1a;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: opacity 0.3s;
+        }
+
+        .btn-submit:hover { opacity: 0.9; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .full-width { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <h3>SJM CUSTOMER PORTAL</h3>
+        <div class="nav-links">
+            <a href="#">Dashboard</a>
+            <a href="#" style="color: var(--accent-gold);">Request Custom Order</a>
+            <a href="#">My Orders</a>
+            <a href="#">Logout</a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="form-container">
+            
+            <div class="page-header">
+                <h2>Request Custom Jewellery</h2>
+                <p>Fill in the details below to request a quote for your unique design.</p>
+            </div>
+
+            <form action="submit_order.php" method="POST" enctype="multipart/form-data" onsubmit="return confirmSubmission()">
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="type">Jewellery Type</label>
+                        <select id="type" name="type" required>
+                            <option value="" disabled selected>Select Type</option>
+                            <option value="Ring">Ring</option>
+                            <option value="Necklace">Necklace</option>
+                            <option value="Bangle">Bangle</option>
+                            <option value="Earrings">Earrings</option>
+                            <option value="Pendant">Pendant</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="material">Preferred Material</label>
+                        <select id="material" name="material" required>
+                            <option value="" disabled selected>Select Material</option>
+                            <option value="22k Gold">22k Gold</option>
+                            <option value="18k Gold">18k Gold</option>
+                            <option value="White Gold">White Gold</option>
+                            <option value="Rose Gold">Rose Gold</option>
+                            <option value="Platinum">Platinum</option>
+                            <option value="Silver">Silver</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="weight">Est. Weight (grams) - Optional</label>
+                        <input type="number" id="weight" name="weight" step="0.01" placeholder="e.g. 8.5">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="requirements">Design Requirements & Notes</label>
+                        <textarea id="requirements" name="requirements" placeholder="Please describe your design idea, specific stone requirements, sizing details, or engraving text..." required></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label>Upload Reference Design / Sketch</label>
+                        <div class="file-upload-wrapper">
+                            <span class="upload-icon">&#128247;</span>
+                            <span class="upload-text" id="file-label">Drag & drop or click to upload image (JPG, PNG)</span>
+                            <input type="file" id="design_file" name="design_file" accept="image/*" onchange="updateFileName(this)">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Submit Request</button>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // updates the text in the upload box when a file is selected
+        function updateFileName(input) {
+            const label = document.getElementById('file-label');
+            if (input.files && input.files.length > 0) {
+                label.textContent = "Selected: " + input.files[0].name;
+                label.style.color = "#d4af37";
+            } else {
+                label.textContent = "Drag & drop or click to upload image (JPG, PNG)";
+                label.style.color = "#ccc";
+            }
+        }
+
+        // Task 1 requirement: Validation/Confirmation Popup [cite: 311]
+        function confirmSubmission() {
+            return confirm("Are you sure you want to submit this custom order request?");
+        }
+    </script>
+
+</body>
+</html>
